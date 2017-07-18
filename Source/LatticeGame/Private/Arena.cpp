@@ -3,38 +3,15 @@
 #include "Arena.h"
 #include <vector>
 
-
-// Sets default values
-AArena::AArena()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-}
-
-// Called when the game starts or when spawned
-void AArena::BeginPlay()
-{
-	Super::BeginPlay();
-	
-	// Generate Arena
-	// Get Voted Arena Size
-	uint8 ArenaX = 30; // TODO: Temp size listed, should get from voting
-	uint8 ArenaY = 30; // TODO: Temp size listed, should get from voting
-	uint8 ArenaZ = 1;  // TODO: Temp size listed, should get from voting
-
-	FArenaGrid arenaGrid;
-}
-
 USTRUCT()
 struct FArenaGridStack
 {
-	TArray<UArenaTile> tiles;
+	//TArray<UArenaTile> tiles;
 
 	// Every stack has ArenaZ number of tiles
 	void AddTile()
 	{
-		tiles.Add(UArenaTile());
+		//tiles.Add(UArenaTile());
 	}
 
 	FArenaGridStack()
@@ -92,6 +69,30 @@ struct FArenaGrid
 
 	}
 };
+
+// Sets default values
+AArena::AArena()
+{
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
+}
+
+// Called when the game starts or when spawned
+void AArena::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	// Generate Arena
+	// Get Voted Arena Size
+	uint8 ArenaX = 30; // TODO: Temp size listed, should get from voting
+	uint8 ArenaY = 30; // TODO: Temp size listed, should get from voting
+	uint8 ArenaZ = 1;  // TODO: Temp size listed, should get from voting
+
+	FArenaGrid arenaGrid;
+}
+
+
 
 
 
