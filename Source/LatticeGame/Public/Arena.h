@@ -17,7 +17,6 @@ public:
 	// Sets default values for this actor's properties
 	AArena();
 	void DestroyTile();
-    std::vector<std::vector<std::vector<UArenaTile>>> arenaFloorTiles;
 
 protected:
 	// Called when the game starts or when spawned

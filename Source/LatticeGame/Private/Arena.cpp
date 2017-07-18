@@ -19,28 +19,81 @@ void AArena::BeginPlay()
 	
 	// Generate Arena
 	// Get Voted Arena Size
-	uint8 ArenaX = 30;
-	uint8 ArenaY = 30;
-	uint8 ArenaZ = 1;
+	uint8 ArenaX = 30; // TODO: Temp size listed, should get from voting
+	uint8 ArenaY = 30; // TODO: Temp size listed, should get from voting
+	uint8 ArenaZ = 1;  // TODO: Temp size listed, should get from voting
 
-	std::vector<std::vector<std::vector<int>>> intVector; // TODO: Should be of type ArenaTile
+	FArenaGrid arenaGrid;
+}
 
-	// Initialize Vector for Arena's Floor
-	for (int x = 0; x < ArenaX; x++)
+USTRUCT()
+struct FArenaGridStack
+{
+	TArray<UArenaTile> tiles;
+
+	// Every stack has ArenaZ number of tiles
+	void AddTile()
 	{
-		intVector.push_back(std::vector<std::vector<int>>());
-		for (int y = 0; y < ArenaY; y++)
-		{
-			intVector[x].push_back(std::vector<int>());
-			for (int z = 0; z < ArenaZ; z++)
-			{
-				int tile = 0;
-				intVector[x][y].push_back(tile);
-			}
-		}
+		tiles.Add(UArenaTile());
 	}
 
-}
+	FArenaGridStack()
+	{
+	}
+};
+
+USTRUCT()
+struct FArenaGridColumn
+{
+	TArray<FArenaGridStack> tileStacks;
+
+	// Every column has ArenaX number of stacks
+	void AddStack()
+	{
+		// Add a new stack for each column
+		tileStacks.Add(FArenaGridStack());
+	}
+
+	FArenaGridColumn()
+	{
+	}
+};
+
+USTRUCT()
+struct FArenaGridRow
+{
+	TArray<FArenaGridColumn> tileColumns;
+
+	// Every row has ArenaY number of columns
+	void AddColumn()
+	{
+		// Add a column to each row
+		tileColumns.Add(FArenaGridColumn());
+	}
+
+	FArenaGridRow()
+	{
+	}
+};
+
+USTRUCT()
+struct FArenaGrid
+{
+	TArray<FArenaGridRow> tileRows;
+
+	// Every grid has ArenaX number of rows
+	void AddRow()
+	{
+		tileRows.Add(FArenaGridRow());
+	}
+
+	FArenaGrid()
+	{
+
+	}
+};
+
+
 
 void AArena::DestroyTile()
 {
