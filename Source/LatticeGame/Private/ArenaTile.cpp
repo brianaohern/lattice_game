@@ -4,24 +4,56 @@
 
 
 // Sets default values for this component's properties
-UArenaTile::UArenaTile()
+AArenaTile::AArenaTile()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = true;
 }
 
+uint16 AArenaTile::getHealth()
+{
+	return health;
+}
+
+void AArenaTile::setHealth(uint16 newHealth)
+{
+	health = newHealth;
+}
+
+uint16 AArenaTile::getHealthRegenRate()
+{
+	return healthRegenRate;
+}
+
+void AArenaTile::setHealthRegenRate(uint16 newHealthRegenRate)
+{
+	healthRegenRate = newHealthRegenRate;
+}
+
+uint16 AArenaTile::getHealthRegenDelay()
+{
+	return healthRegenDelay;
+}
+
+void AArenaTile::setHealthRegenDelay(uint16 newHealthRegenDelay)
+{
+	healthRegenDelay = newHealthRegenDelay;
+}
+
+void AArenaTile::takeDamage(uint16 damage)
+{
+}
 
 // Called when the game starts
-void UArenaTile::BeginPlay()
+void AArenaTile::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-
 // Called every frame
-void UArenaTile::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void AArenaTile::Tick(float DeltaTime)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	Super::Tick(DeltaTime);
 }
 

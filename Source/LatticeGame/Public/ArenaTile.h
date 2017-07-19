@@ -3,18 +3,35 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "GameFramework/Actor.h"
 #include "ArenaTile.generated.h"
 
-
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class LATTICEGAME_API UArenaTile : public UActorComponent
+UCLASS()
+class LATTICEGAME_API AArenaTile : public AActor
 {
 	GENERATED_BODY()
 
+	uint16 health;
+	uint16 healthRegenRate;
+	uint16 healthRegenDelay;
+	
+	UPROPERTY()
+	FVector Location;
+
 public:	
 	// Sets default values for this component's properties
-	UArenaTile();
+	AArenaTile();
+
+	uint16 getHealth();
+	void setHealth(uint16 newHealth);
+
+	uint16 getHealthRegenRate();
+	void setHealthRegenRate(uint16 newHealthRegenRate);
+
+	uint16 getHealthRegenDelay();
+	void setHealthRegenDelay(uint16 newHealthRegenDelay);
+
+	void takeDamage(uint16 damage);
 
 protected:
 	// Called when the game starts
@@ -22,8 +39,6 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void Tick(float DeltaTime) override;
 
-		
-	
 };

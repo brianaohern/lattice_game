@@ -4,31 +4,15 @@
 #include <vector>
 
 USTRUCT()
-struct FArenaGridStack
-{
-	//TArray<UArenaTile> tiles;
-
-	// Every stack has ArenaZ number of tiles
-	void AddTile()
-	{
-		//tiles.Add(UArenaTile());
-	}
-
-	FArenaGridStack()
-	{
-	}
-};
-
-USTRUCT()
 struct FArenaGridColumn
 {
-	TArray<FArenaGridStack> tileStacks;
+	TArray<AArenaTile*> tiles;
 
 	// Every column has ArenaX number of stacks
-	void AddStack()
+	void AddNewTile()
 	{
-		// Add a new stack for each column
-		tileStacks.Add(FArenaGridStack());
+		AArenaTile* newTile = new AArenaTile();
+		tiles.Add(newTile);
 	}
 
 	FArenaGridColumn()
@@ -42,9 +26,8 @@ struct FArenaGridRow
 	TArray<FArenaGridColumn> tileColumns;
 
 	// Every row has ArenaY number of columns
-	void AddColumn()
+	void AddNewColumn()
 	{
-		// Add a column to each row
 		tileColumns.Add(FArenaGridColumn());
 	}
 
@@ -56,17 +39,39 @@ struct FArenaGridRow
 USTRUCT()
 struct FArenaGrid
 {
+	uint16 x;
+	uint16 y;
+	uint16 z;
+
 	TArray<FArenaGridRow> tileRows;
 
 	// Every grid has ArenaX number of rows
-	void AddRow()
+	// AddRows is used to initialize all rows in grid
+	void AddNewRow()
 	{
 		tileRows.Add(FArenaGridRow());
 	}
 
-	FArenaGrid()
+	void BuildArena()
 	{
+		// Add rows
+		for(int i = 0; i < x; i++)
+		{
+			AddNewRow();
+		}
 
+		// Add columns
+		for (int i = 0; i < x; i++)
+		{
+			for(int j = 0; j < y; j++)
+				tileRows[i].AddNewColumn();
+		}
+	}
+
+	FArenaGrid(uint16 x_in, uint16 y_in)
+	{
+		x = x_in;
+		y = y_in;
 	}
 };
 
@@ -89,16 +94,22 @@ void AArena::BeginPlay()
 	uint8 ArenaY = 30; // TODO: Temp size listed, should get from voting
 	uint8 ArenaZ = 1;  // TODO: Temp size listed, should get from voting
 
-	FArenaGrid arenaGrid;
+	TArray<FArenaGrid> arenaStack;
+
+	for (int i = 0; i < ArenaZ; i++)
+	{
+		arenaStack.Add(FArenaGrid(ArenaX, ArenaY));
+		arenaStack[i].BuildArena();
+	}
 }
-
-
-
-
 
 void AArena::DestroyTile()
 {
+}
 
+AArenaTile* AArena::AddTile(FVector Location)
+{
+	return new AArenaTile;
 }
 
 // Called every frame

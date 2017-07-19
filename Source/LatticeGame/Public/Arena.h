@@ -16,6 +16,7 @@ class LATTICEGAME_API AArena : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AArena();
+	AArenaTile* AddTile(FVector Location);
 	void DestroyTile();
 
 protected:
