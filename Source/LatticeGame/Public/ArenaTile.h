@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "SkeletalMeshTypes.h"
 #include "ArenaTile.generated.h"
 
 UCLASS()
@@ -17,10 +18,21 @@ class LATTICEGAME_API AArenaTile : public AActor
 	
 	UPROPERTY()
 	FVector Location;
+	
+	UPROPERTY()
+	FRotator Rotation;
+
+	UPROPERTY()
+	AActor* tileMesh; // TODO: Shouldn't be AActor, should be of type USkeletalMesh
+
+	UPROPERTY()
+	UClass* BPToSpawn;
 
 public:	
 	// Sets default values for this component's properties
 	AArenaTile();
+
+	void Spawn(UWorld* TheWorld);
 
 	uint16 getHealth();
 	void setHealth(uint16 newHealth);
@@ -36,6 +48,9 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	void Clear();
+	bool IsValid() const;
 
 public:	
 	// Called every frame

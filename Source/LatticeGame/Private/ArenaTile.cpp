@@ -11,6 +11,27 @@ AArenaTile::AArenaTile()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+void AArenaTile::Spawn(UWorld* TheWorld)
+{
+	// Set skeletal mesh using BPToSpawn
+	tileMesh = NULL; // TODO: Temp
+}
+
+void AArenaTile::Clear()
+{
+	BPToSpawn = NULL;
+	if (IsValid())
+	{
+		tileMesh->Destroy();
+		tileMesh = NULL;
+	}
+}
+
+bool AArenaTile::IsValid() const
+{
+	return (tileMesh != NULL);
+}
+
 uint16 AArenaTile::getHealth()
 {
 	return health;
