@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "SkeletalMeshTypes.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Sound/SoundCue.h"
 #include "ArenaTile.generated.h"
 
 UCLASS()
@@ -23,10 +25,35 @@ class LATTICEGAME_API AArenaTile : public AActor
 	FRotator Rotation;
 
 	UPROPERTY()
+	//USkeletalMeshComponent* tileMesh;
 	AActor* tileMesh; // TODO: Shouldn't be AActor, should be of type USkeletalMesh
 
 	UPROPERTY()
 	UClass* BPToSpawn;
+
+private:
+
+	/** FX component */
+	UPROPERTY(VisibleDefaultsOnly, Category = Effects)
+	UParticleSystemComponent* PickupPSC;
+
+protected:
+
+	/** ambient FX on tile */
+	UPROPERTY(EditDefaultsOnly, Category = Effects)
+	UParticleSystem* AmbientFX;
+
+	/** FX shown when destroyed */
+	UPROPERTY(EditDefaultsOnly, Category = Effects)
+	UParticleSystem* DestroyFX;
+
+	/** ambient droning sound */
+	UPROPERTY(EditDefaultsOnly, Category = Effects)
+	USoundCue* AmbientSound;
+
+	/** sound played when destroyed */
+	UPROPERTY(EditDefaultsOnly, Category = Effects)
+	USoundCue* DestroySound;
 
 public:	
 	// Sets default values for this component's properties
