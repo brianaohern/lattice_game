@@ -22,7 +22,7 @@ void AArenaTile::Clear()
 	BPToSpawn = NULL;
 	if (IsValid())
 	{
-		tileMesh->Destroy();
+		//tileMesh->Destroy();
 		tileMesh = NULL;
 	}
 }

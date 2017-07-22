@@ -24,9 +24,9 @@ class LATTICEGAME_API AArenaTile : public AActor
 	UPROPERTY()
 	FRotator Rotation;
 
-	UPROPERTY()
-	//USkeletalMeshComponent* tileMesh;
-	AActor* tileMesh; // TODO: Shouldn't be AActor, should be of type USkeletalMesh
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+	USkeletalMeshComponent* tileMesh;
+	//AActor* tileMesh; // TODO: Shouldn't be AActor, should be of type USkeletalMesh
 
 	UPROPERTY()
 	UClass* BPToSpawn;
