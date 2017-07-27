@@ -14,9 +14,10 @@ class LATTICEGAME_API AArenaTile : public AActor
 {
 	GENERATED_BODY()
 
-	uint16 health;
-	uint16 healthRegenRate;
-	uint16 healthRegenDelay;
+	uint16 Health;
+	uint16 CurrentHealth;
+	uint16 HealthRegenRate;
+	uint16 HealthRegenDelay;
 	
 	UPROPERTY()
 	FVector Location;
@@ -25,16 +26,12 @@ class LATTICEGAME_API AArenaTile : public AActor
 	FRotator Rotation;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	USkeletalMeshComponent* tileMesh;
-	//AActor* tileMesh; // TODO: Shouldn't be AActor, should be of type USkeletalMesh
-
-	UPROPERTY()
-	UClass* BPToSpawn;
+	UStaticMeshComponent* tileMesh;
 
 private:
 
 	/** FX component */
-	UPROPERTY(VisibleDefaultsOnly, Category = Effects)
+	UPROPERTY(EditDefaultsOnly, Category = Effects)
 	UParticleSystemComponent* PickupPSC;
 
 protected:
@@ -61,16 +58,16 @@ public:
 
 	void Spawn(UWorld* TheWorld);
 
-	uint16 getHealth();
-	void setHealth(uint16 newHealth);
+	uint16 GetHealth();
+	void SetHealth(uint16 newHealth);
 
-	uint16 getHealthRegenRate();
-	void setHealthRegenRate(uint16 newHealthRegenRate);
+	uint16 GetHealthRegenRate();
+	void SetHealthRegenRate(uint16 newHealthRegenRate);
 
-	uint16 getHealthRegenDelay();
-	void setHealthRegenDelay(uint16 newHealthRegenDelay);
+	uint16 GetHealthRegenDelay();
+	void SetHealthRegenDelay(uint16 newHealthRegenDelay);
 
-	void takeDamage(uint16 damage);
+	void TakeDamage(uint16 damage);
 
 protected:
 	// Called when the game starts

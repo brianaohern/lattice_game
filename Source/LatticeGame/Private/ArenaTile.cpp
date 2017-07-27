@@ -6,20 +6,17 @@
 // Sets default values for this component's properties
 AArenaTile::AArenaTile()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
+	tileMesh = CreateDefaultSubobject<UStaticMeshComponent>("TileMesh");
+
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 void AArenaTile::Spawn(UWorld* TheWorld)
 {
-	// Set skeletal mesh using BPToSpawn
-	tileMesh = NULL; // TODO: Temp
 }
 
 void AArenaTile::Clear()
 {
-	BPToSpawn = NULL;
 	if (IsValid())
 	{
 		//tileMesh->Destroy();
@@ -32,37 +29,37 @@ bool AArenaTile::IsValid() const
 	return (tileMesh != NULL);
 }
 
-uint16 AArenaTile::getHealth()
+uint16 AArenaTile::GetHealth()
 {
-	return health;
+	return Health;
 }
 
-void AArenaTile::setHealth(uint16 newHealth)
+void AArenaTile::SetHealth(uint16 newHealth)
 {
-	health = newHealth;
+	Health = newHealth;
 }
 
-uint16 AArenaTile::getHealthRegenRate()
+uint16 AArenaTile::GetHealthRegenRate()
 {
-	return healthRegenRate;
+	return HealthRegenRate;
 }
 
-void AArenaTile::setHealthRegenRate(uint16 newHealthRegenRate)
+void AArenaTile::SetHealthRegenRate(uint16 newHealthRegenRate)
 {
-	healthRegenRate = newHealthRegenRate;
+	HealthRegenRate = newHealthRegenRate;
 }
 
-uint16 AArenaTile::getHealthRegenDelay()
+uint16 AArenaTile::GetHealthRegenDelay()
 {
-	return healthRegenDelay;
+	return HealthRegenDelay;
 }
 
-void AArenaTile::setHealthRegenDelay(uint16 newHealthRegenDelay)
+void AArenaTile::SetHealthRegenDelay(uint16 newHealthRegenDelay)
 {
-	healthRegenDelay = newHealthRegenDelay;
+	HealthRegenDelay = newHealthRegenDelay;
 }
 
-void AArenaTile::takeDamage(uint16 damage)
+void AArenaTile::TakeDamage(uint16 damage)
 {
 }
 
