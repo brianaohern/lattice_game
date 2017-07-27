@@ -71,8 +71,6 @@ public:
 	uint16 GetHealthRegenDelay();
 	void SetHealthRegenDelay(uint16 newHealthRegenDelay);
 
-	void TakeDamage(uint16 damage);
-
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

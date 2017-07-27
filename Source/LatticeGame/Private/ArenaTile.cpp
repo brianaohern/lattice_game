@@ -59,10 +59,6 @@ void AArenaTile::SetHealthRegenDelay(uint16 newHealthRegenDelay)
 	HealthRegenDelay = newHealthRegenDelay;
 }
 
-void AArenaTile::TakeDamage(uint16 damage)
-{
-}
-
 // Called when the game starts
 void AArenaTile::BeginPlay()
 {

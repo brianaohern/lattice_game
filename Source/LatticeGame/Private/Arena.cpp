@@ -1,74 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Arena.h"
-#include <vector>
-
-USTRUCT()
-struct FArenaGridRow
-{
-	TArray<AArenaTile*> Y; // Column (Actual Tile in Row)
-
-	// Every row has ArenaY number of columns
-	void AddNewColumn()
-	{
-		AArenaTile* newTile = new AArenaTile();
-		Y.Add(newTile);
-	}
-
-	FArenaGridRow()
-	{
-	}
-};
-
-USTRUCT()
-struct FArenaGrid
-{
-	uint16 x;
-	uint16 y;
-
-	TArray<FArenaGridRow> X; // Rows
-
-	// Every grid has ArenaX number of rows
-	// AddRows is used to initialize all rows in grid
-	void AddNewRow()
-	{
-		X.Add(FArenaGridRow());
-	}
-
-	void BuildArena(UWorld* World)
-	{
-		// Add rows
-		for(int i = 0; i < x; i++)
-		{
-			AddNewRow();
-		}
-
-		// Add columns
-		for (int i = 0; i < x; i++)
-		{
-			for(int j = 0; j < y; j++)
-				X[i].AddNewColumn();
-		}
-
-		// Spawn Tiles
-		if (X.Num() > 0)
-		{
-			for (int i = 0; i < X.Num(); i++)
-			{
-				for (int j = 0; j < X[i].Y.Num(); j++)
-				{
-					X[i].Y[j]->Spawn(World);
-				}
-			}
-		}
-	}
-
-	FArenaGrid(uint16 x_in, uint16 y_in)
-	{
-		x = x_in;
-		y = y_in;
-	}
-};
 
 // Sets default values
 AArena::AArena()
@@ -91,7 +23,6 @@ void AArena::BeginPlay()
 	UWorld* World = GetWorld(); // TODO: TEMP
 
 	// Build a separate arena for each layer (ArenaZ)
-	TArray<FArenaGrid> arenaStack;
 	for (int i = 0; i < ArenaZ; i++)
 	{
 		arenaStack.Add(FArenaGrid(ArenaX, ArenaY));
