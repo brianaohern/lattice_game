@@ -25,6 +25,9 @@ class LATTICEGAME_API AArenaTile : public AActor
 	UPROPERTY()
 	FRotator Rotation;
 
+	UPROPERTY()
+	FVector Scale;
+
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	UStaticMeshComponent* tileMesh;
 
@@ -56,6 +59,7 @@ public:
 	// Sets default values for this component's properties
 	AArenaTile();
 
+	UFUNCTION(BlueprintCallable)
 	void Spawn(UWorld* TheWorld);
 
 	uint16 GetHealth();
