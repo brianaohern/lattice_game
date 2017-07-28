@@ -16,9 +16,9 @@ void AArena::BeginPlay()
 	
 	// Generate Arena
 	// Get Voted Arena Size
-	uint8 ArenaX = 30; // TODO: Temp size listed, should get from voting
-	uint8 ArenaY = 30; // TODO: Temp size listed, should get from voting
-	uint8 ArenaZ = 1;  // TODO: Temp size listed, should get from voting
+	uint8 ArenaX = 20; // TODO: Temp size listed, should get from voting
+	uint8 ArenaY = 20; // TODO: Temp size listed, should get from voting
+	uint8 ArenaZ = 2;  // TODO: Temp size listed, should get from voting
 
 	StartBuild(ArenaX, ArenaY, ArenaZ);
 }

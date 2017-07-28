@@ -74,8 +74,8 @@ struct FArenaGrid
 
 	FArenaGrid()
 	{
-		x = 30;
-		y = 30;
+		x = 20;
+		y = 20;
 	}
 
 	FArenaGrid(uint16 x_in, uint16 y_in)
