@@ -20,12 +20,17 @@ void AArena::BeginPlay()
 	uint8 ArenaY = 30; // TODO: Temp size listed, should get from voting
 	uint8 ArenaZ = 1;  // TODO: Temp size listed, should get from voting
 
+	StartBuild(ArenaX, ArenaY, ArenaZ);
+}
+
+void AArena::StartBuild_Implementation(int32 x, int32 y, int32 z)
+{
 	UWorld* World = GetWorld(); // TODO: TEMP
 
-	// Build a separate arena for each layer (ArenaZ)
-	for (int i = 0; i < ArenaZ; i++)
+	// Build a separate arena for each layer (z)
+	for (int i = 0; i < z; i++)
 	{
-		arenaStack.Add(FArenaGrid(ArenaX, ArenaY));
+		arenaStack.Add(FArenaGrid(x, y));
 		arenaStack[i].BuildArena(World);
 	}
 }

@@ -8,7 +8,7 @@
 #include <vector>
 #include "Arena.generated.h"
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FArenaGridRow
 {
 	GENERATED_BODY()
@@ -27,13 +27,13 @@ struct FArenaGridRow
 	}
 };
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FArenaGrid
 {
 	GENERATED_BODY()
 
-	uint16 x;
-	uint16 y;
+	int32 x;
+	int32 y;
 
 	TArray<FArenaGridRow> X; // Rows
 
@@ -96,11 +96,14 @@ public:
 	AArenaTile* AddTile(FVector Location);
 	void DestroyTile();
 
+	UFUNCTION(BlueprintNativeEvent)
+	void StartBuild(int32 x, int32 y, int32 z);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Grid")
 	TArray<FArenaGrid> arenaStack;
 
 public:	
