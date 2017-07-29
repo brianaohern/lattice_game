@@ -110,9 +110,15 @@ void ALatticeGameCharacter::BeginPlay()
 
 void ALatticeGameCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
+	// set up gameplay key bindings
+	check(PlayerInputComponent);
+
+
 	// TODO: PLAYER MOVEMENT KEY BINDINGS:
 
 	// Move Forward (Default: W)
+	PlayerInputComponent->BindAxis("MoveForward", this, &ALatticeGameCharacter::MoveForward);
+
 	// Move Backward (Default: S)
 	// Strafe Right (Default: D)
 	// Strafe Left (Default: A)
@@ -128,9 +134,7 @@ void ALatticeGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	// Voice to Team (Default: V)
 	// Show Scoreboard (Default: Tab)
 
-	// set up gameplay key bindings
-	check(PlayerInputComponent);
-
+	// CHARACTER DEFAULTS
 	// PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	// PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
@@ -156,6 +160,17 @@ void ALatticeGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	// PlayerInputComponent->BindAxis("LookUpRate", this, &ALatticeGameCharacter::LookUpAtRate);
 }
 
+void ALatticeGameCharacter::MoveForward(float Value)
+{
+	if (Value != 0.0f)
+	{
+		// add movement in that direction
+		AddMovementInput(GetActorForwardVector(), Value);
+	}
+}
+
+
+// DEFAULTS 
 // void ALatticeGameCharacter::OnFire()
 // {
 // 	// try and fire a projectile
