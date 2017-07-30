@@ -14,32 +14,48 @@ class LATTICEGAME_API AArenaTile : public AActor
 {
 	GENERATED_BODY()
 
-	uint16 Health;
-	uint16 CurrentHealth;
-	uint16 HealthRegenRate;
-	uint16 HealthRegenDelay;
+protected:
+
+	/** Maximum health a tile can have */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Health)
+	float MaxHealth;
+
+	/** Current health tile has (between 0 and Health) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Health)
+	float CurrentHealth;
+
+	/** Number of health regeneration ticks per second */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Health)
+	float HealthRegenRate;
+
+	/** Number of seconds until a tile starts regenerating after being damaged */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Health)
+	float HealthRegenDelay;
+
+	/** Time elapsed since last damage taken (used for regen purposes */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Health)
+	float HealthRegenTimerElapsed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Health)
+	bool canRegen;
 	
-	UPROPERTY()
+	/** World space location of tile mesh */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Placement)
 	FVector Location;
 	
-	UPROPERTY()
+	/** World space rotation of tile mesh */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Placement)
 	FRotator Rotation;
 
-	UPROPERTY()
+	/** World space scale of tile mesh */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Placement)
 	FVector Scale;
 
+	/** Mesh to be used by tile */
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	UStaticMeshComponent* tileMesh;
 
-private:
-
-	/** FX component */
-	UPROPERTY(EditDefaultsOnly, Category = Effects)
-	UParticleSystemComponent* PickupPSC;
-
-protected:
-
-	/** ambient FX on tile */
+	/** Ambient FX on tile */
 	UPROPERTY(EditDefaultsOnly, Category = Effects)
 	UParticleSystem* AmbientFX;
 
@@ -47,39 +63,38 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Effects)
 	UParticleSystem* DestroyFX;
 
-	/** ambient droning sound */
+	/** Ambient droning sound */
 	UPROPERTY(EditDefaultsOnly, Category = Effects)
 	USoundCue* AmbientSound;
 
-	/** sound played when destroyed */
+	/** Sound played when destroyed */
 	UPROPERTY(EditDefaultsOnly, Category = Effects)
 	USoundCue* DestroySound;
 
+	/** Called when the game starts */
+	virtual void BeginPlay() override;
+
+	/** Removes tile from memory */
+	void Clear();
+
+	/** Check that reference to tile is not null */
+	bool IsValid() const;
+
+private:
+
+	/** FX component */
+	UPROPERTY(EditDefaultsOnly, Category = Effects)
+	UParticleSystemComponent* PickupPSC;
+
 public:	
-	// Sets default values for this component's properties
+	
+	/** Sets default values for component's properties */
 	AArenaTile();
 
+	/** Allocate memory for tile and put mesh and collision into world */
 	UFUNCTION(BlueprintCallable)
 	void Spawn(UWorld* TheWorld);
 
-	uint16 GetHealth();
-	void SetHealth(uint16 newHealth);
-
-	uint16 GetHealthRegenRate();
-	void SetHealthRegenRate(uint16 newHealthRegenRate);
-
-	uint16 GetHealthRegenDelay();
-	void SetHealthRegenDelay(uint16 newHealthRegenDelay);
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-	void Clear();
-	bool IsValid() const;
-
-public:	
-	// Called every frame
+	/** Called every frame */
 	virtual void Tick(float DeltaTime) override;
-
 };

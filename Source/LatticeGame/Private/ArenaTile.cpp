@@ -29,36 +29,6 @@ bool AArenaTile::IsValid() const
 	return (tileMesh != NULL);
 }
 
-uint16 AArenaTile::GetHealth()
-{
-	return Health;
-}
-
-void AArenaTile::SetHealth(uint16 newHealth)
-{
-	Health = newHealth;
-}
-
-uint16 AArenaTile::GetHealthRegenRate()
-{
-	return HealthRegenRate;
-}
-
-void AArenaTile::SetHealthRegenRate(uint16 newHealthRegenRate)
-{
-	HealthRegenRate = newHealthRegenRate;
-}
-
-uint16 AArenaTile::GetHealthRegenDelay()
-{
-	return HealthRegenDelay;
-}
-
-void AArenaTile::SetHealthRegenDelay(uint16 newHealthRegenDelay)
-{
-	HealthRegenDelay = newHealthRegenDelay;
-}
-
 // Called when the game starts
 void AArenaTile::BeginPlay()
 {
