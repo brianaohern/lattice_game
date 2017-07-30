@@ -147,7 +147,6 @@ void ALatticeGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 	// PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ALatticeGameCharacter::OnResetVR);
 
-	// PlayerInputComponent->BindAxis("MoveForward", this, &ALatticeGameCharacter::MoveForward);
 	// PlayerInputComponent->BindAxis("MoveRight", this, &ALatticeGameCharacter::MoveRight);
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
@@ -286,15 +285,6 @@ void ALatticeGameCharacter::MoveForward(float Value)
 //		}
 //	}
 //}
-
-// void ALatticeGameCharacter::MoveForward(float Value)
-// {
-// 	if (Value != 0.0f)
-// 	{
-// 		// add movement in that direction
-// 		AddMovementInput(GetActorForwardVector(), Value);
-// 	}
-// }
 
 // void ALatticeGameCharacter::MoveRight(float Value)
 // {
