@@ -120,6 +120,7 @@ void ALatticeGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	PlayerInputComponent->BindAxis("MoveForward", this, &ALatticeGameCharacter::MoveForward);
 
 	// Look Up & Look Down (Default: Mouse Y)
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	// Strafe Right (Default: D) & Strafe Left (Default: A)
 	PlayerInputComponent->BindAxis("StrafeRight", this, &ALatticeGameCharacter::StrafeRight);
