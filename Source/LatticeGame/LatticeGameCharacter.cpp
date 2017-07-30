@@ -116,12 +116,12 @@ void ALatticeGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 	// TODO: PLAYER MOVEMENT KEY BINDINGS:
 
-	// Move Forward (Default: W)
+	// Move Forward (Default: W) & Move Backward (Default: S)
 	PlayerInputComponent->BindAxis("MoveForward", this, &ALatticeGameCharacter::MoveForward);
 
-	// Move Backward (Default: S)
-	// Strafe Right (Default: D)
-	// Strafe Left (Default: A)
+	// Strafe Right (Default: D) & Strafe Left (Default: A)
+	PlayerInputComponent->BindAxis("StrafeRight", this, &ALatticeGameCharacter::StrafeRight);
+
 	// Jump (Default: Space)
 	// Use Ability (Default: Right Click)
 	// Switch to Weapon 1 (Default: 1)
@@ -165,6 +165,15 @@ void ALatticeGameCharacter::MoveForward(float Value)
 	{
 		// add movement in that direction
 		AddMovementInput(GetActorForwardVector(), Value);
+	}
+}
+
+void ALatticeGameCharacter::StrafeRight(float Value)
+{
+	if (Value != 0.0f)
+	{
+		// add movement in that direction
+		AddMovementInput(GetActorRightVector(), Value);
 	}
 }
 

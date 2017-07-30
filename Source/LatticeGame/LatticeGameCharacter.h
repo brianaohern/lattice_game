@@ -92,7 +92,7 @@ protected:
 	void MoveForward(float Val);
 
 	/** Handles stafing movement, left and right */
-	void MoveRight(float Val);
+	void StrafeRight(float Val);
 
 	/**
 	 * Called via input to turn at a given rate.
