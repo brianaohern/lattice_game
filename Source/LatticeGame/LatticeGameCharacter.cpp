@@ -123,6 +123,9 @@ void ALatticeGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	PlayerInputComponent->BindAxis("StrafeRight", this, &ALatticeGameCharacter::StrafeRight);
 
 	// Jump (Default: Space)
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	
 	// Use Ability (Default: Right Click)
 	// Switch to Weapon 1 (Default: 1)
 	// Switch to Weapon 2 (Default: 2)
