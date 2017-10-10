@@ -1,6 +1,7 @@
-// Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
+// Copyright 
 
 #include "LatticeGameCharacter.h"
+#include "LatticeWeapon.h"
 #include "LatticeGameProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
@@ -13,6 +14,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
+
 //////////////////////////////////////////////////////////////////////////
 // ALatticeGameCharacter
 
@@ -21,9 +23,12 @@ ALatticeGameCharacter::ALatticeGameCharacter()
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 
-	// set our turn rates for input
+	// Set our turn rates for input
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
+
+	// Set fire weapon toggle 
+	bWantsToFireWeapon = false;
 
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
@@ -105,6 +110,7 @@ void ALatticeGameCharacter::BeginPlay()
 	// }
 }
 
+
 //////////////////////////////////////////////////////////////////////////
 // Input
 
@@ -136,7 +142,11 @@ void ALatticeGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	// Switch to Weapon 1 (Default: 1)
 	// Switch to Weapon 2 (Default: 2)
 	// Switch to Weapon 3 (Default: 3)
+
 	// Fire Weapon (Default: Left Click)
+	PlayerInputComponent->BindAction("FireWeapon", IE_Pressed, this, &ALatticeGameCharacter::OnStartFire);
+	PlayerInputComponent->BindAction("FireWeapon", IE_Released, this, &ALatticeGameCharacter::OnStopFire);
+
 	// Talk to All (Default: T)
 	// Talk to Team (Default: Y)
 	// Voice to All (Default: C)
@@ -182,7 +192,125 @@ void ALatticeGameCharacter::StrafeRight(float Value)
 	}
 }
 
+void ALatticeGameCharacter::OnStartFire()
+{
+	// ALatticeGamePlayerController* MyPC = Cast<ALatticeGamePlayerController>(Controller);
+	// if (MyPC && MyPC->IsGameInputAllowed())
+	// {
+		StartWeaponFire();
+	// }
+}
 
+void ALatticeGameCharacter::OnStopFire()
+{
+	StopWeaponFire();
+}
+
+
+//////////////////////////////////////////////////////////////////////
+// Weapon Usage
+
+void ALatticeGameCharacter::StartWeaponFire()
+{
+	if (!bWantsToFireWeapon)
+	{
+		bWantsToFireWeapon = true;
+		if (CurrentWeapon)
+		{
+			CurrentWeapon->StartFire();
+		}
+	}
+}
+
+void ALatticeGameCharacter::StopWeaponFire()
+{
+	if (bWantsToFireWeapon)
+	{
+		bWantsToFireWeapon = false;
+		if (CurrentWeapon)
+		{
+			CurrentWeapon->StopFire();
+		}
+	}
+}
+
+void ALatticeGameCharacter::OnRep_CurrentWeapon(ALatticeWeapon* LastWeapon)
+{
+	SetCurrentWeapon(CurrentWeapon, LastWeapon);
+}
+
+void ALatticeGameCharacter::SetCurrentWeapon(ALatticeWeapon* NewWeapon, ALatticeWeapon* LastWeapon)
+{
+	ALatticeWeapon* LocalLastWeapon = NULL;
+
+	if (LastWeapon != NULL)
+	{
+		LocalLastWeapon = LastWeapon;
+	}
+	else if (NewWeapon != CurrentWeapon)
+	{
+		LocalLastWeapon = CurrentWeapon;
+	}
+
+	// unequip previous
+	if (LocalLastWeapon)
+	{
+		LocalLastWeapon->OnUnEquip();
+	}
+
+	CurrentWeapon = NewWeapon;
+
+	// equip new one
+	if (NewWeapon)
+	{
+		NewWeapon->SetOwningPawn(this);	// Make sure weapon's MyPawn is pointing back to us. During replication, we can't guarantee APawn::CurrentWeapon will rep after AWeapon::MyPawn!
+
+		NewWeapon->OnEquip(LastWeapon);
+	}
+}
+
+bool ALatticeGameCharacter::IsFirstPerson() const
+{
+	return IsAlive(); // && Controller && Controller->IsLocalPlayerController();
+}
+
+bool ALatticeGameCharacter::CanFire() const
+{
+	return IsAlive();
+}
+
+
+bool ALatticeGameCharacter::CanReload() const
+{
+	return true;
+}
+
+
+//////////////////////////////////////////////////////////////////////
+// Replication
+
+FName ALatticeGameCharacter::GetWeaponAttachPoint() const
+{
+	return WeaponAttachPoint;
+}
+
+USkeletalMeshComponent* ALatticeGameCharacter::GetSpecifcPawnMesh(bool WantFirstPerson) const
+{
+	return WantFirstPerson == true ? Mesh1P : GetMesh();
+}
+
+USkeletalMeshComponent* ALatticeGameCharacter::GetPawnMesh() const
+{
+	return IsFirstPerson() ? Mesh1P : GetMesh();
+}
+
+bool ALatticeGameCharacter::IsAlive() const
+{
+	return Health > 0;
+}
+
+
+//////////////////////////////////////////////////////////////////////
 // DEFAULTS 
 // void ALatticeGameCharacter::OnFire()
 // {

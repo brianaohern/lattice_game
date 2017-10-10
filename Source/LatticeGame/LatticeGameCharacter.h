@@ -1,4 +1,4 @@
-// Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
+// Copyright 
 
 #pragma once
 
@@ -45,8 +45,21 @@ class ALatticeGameCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UMotionControllerComponent* L_MotionController;
 
+	/** [local] starts weapon fire */
+	void StartWeaponFire();
+
+	/** [local] stops weapon fire */
+	void StopWeaponFire(); 
+
+	/** check if pawn is still alive */
+	bool IsAlive() const;
+
 public:
 	ALatticeGameCharacter();
+
+	// Current health of the Pawn
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = Health)
+	float Health;
 
 protected:
 	virtual void BeginPlay();
@@ -59,6 +72,9 @@ public:
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
+
+	/** current weapon firing state */
+	uint8 bWantsToFireWeapon : 1;
 
 	/** Gun muzzle's offset from the characters location */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
@@ -80,10 +96,36 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint32 bUsingMotionControllers : 1;
 
+	/*
+	* Get either first or third person mesh.
+	*
+	* @param	WantFirstPerson		If true returns the first peron mesh, else returns the third
+	*/
+	USkeletalMeshComponent* GetSpecifcPawnMesh(bool WantFirstPerson) const;
+
+	/** get weapon attach point */
+	FName GetWeaponAttachPoint() const;
+
+	/** get mesh component */
+	USkeletalMeshComponent* GetPawnMesh() const;
+
+	/** check if pawn can fire weapon */
+	bool CanFire() const;
+
+	/** check if pawn can reload weapon */
+	bool CanReload() const;
+
+	/** get camera view type */
+	UFUNCTION(BlueprintCallable, Category = Mesh)
+	virtual bool IsFirstPerson() const;
+
 protected:
 	
 	/** Fires a projectile. */
-	void OnFire();
+	void OnStartFire();
+
+	/** Stops projectile firing. */
+	void OnStopFire();
 
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();
@@ -106,6 +148,10 @@ protected:
 	 */
 	void LookUpAtRate(float Rate);
 
+	/** currently equipped weapon */
+	UPROPERTY(Transient, ReplicatedUsing = OnRep_CurrentWeapon)
+	class ALatticeWeapon* CurrentWeapon;
+
 	struct TouchData
 	{
 		TouchData() { bIsPressed = false;Location=FVector::ZeroVector;}
@@ -124,6 +170,13 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
 
+	/** updates current weapon */
+	void SetCurrentWeapon(class ALatticeWeapon* NewWeapon, class ALatticeWeapon* LastWeapon = NULL);
+
+	/** current weapon rep handler */
+	UFUNCTION()
+	void OnRep_CurrentWeapon(class ALatticeWeapon* LastWeapon);
+
 	/* 
 	 * Configures input for touchscreen devices if there is a valid touch interface for doing so 
 	 *
@@ -131,6 +184,10 @@ protected:
 	 * @returns true if touch controls were enabled.
 	 */
 	bool EnableTouchscreenMovement(UInputComponent* InputComponent);
+
+	/** socket or bone name for attaching weapon mesh */
+	UPROPERTY(EditDefaultsOnly, Category = Inventory)
+	FName WeaponAttachPoint;
 
 public:
 	/** Returns Mesh1P subobject **/
